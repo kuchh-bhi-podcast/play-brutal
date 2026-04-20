@@ -2,6 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { google } from "googleapis";
+import Innertube from 'youtubei.js';
 
 async function startServer() {
   const app = express();
@@ -181,7 +182,6 @@ async function startServer() {
 
 // Innertube implementation for YouTube Music
 let yt: any = null;
-import Innertube from 'youtubei.js';
 
 app.get("/api/yt/search", async (req, res) => {
   try {
