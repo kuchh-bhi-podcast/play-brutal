@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+           "type": "string"
+        },
+        "createdAt": {
+           "type": "string",
+           "format": "timestamp"
+        }
+      },
+      "required": ["email", "name", "createdAt"]
+},
+    "Track": {
+      "title": "Track",
+      "description": "Music track metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "artist": { "type": "string" },
+        "album": { "type": "string" },
+        "duration": { "type": "number" },
+        "url": { "type": "string" },
+        "fileType": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "timestamp" }
+      },
+      "required": ["id", "title", "ownerId", "createdAt"]
+    },
+    "Playlist": {
+      "title": "Playlist",
+      "description": "User playlist",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "trackIds": { "type": "array", "items": { "type": "string" } },
+        "ownerId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "timestamp" },
+        "updatedAt": { "type": "string", "format": "timestamp" }
+      },
+      "required": ["name", "ownerId", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "User" },
+      "description": "User profiles"
+    },
+    "/tracks/{trackId}": {
+      "schema": { "$ref": "Track" },
+      "description": "User tracks"
+    },
+    "/playlists/{playlistId}": {
+      "schema": { "$ref": "Playlist" },
+      "description": "User playlists"
+    }
+  }
+}

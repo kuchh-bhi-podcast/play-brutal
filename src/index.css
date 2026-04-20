@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neo-yellow: #FFD600;
+  --color-neo-pink: #FF4FA3;
+  --color-neo-cyan: #35F2FF;
+  --color-neo-lime: #C8FF00;
+  --color-neo-bg: #EAEAEA;
+  --color-neo-dark: #121212;
+
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-neo-bg);
+    color: black;
+    font-family: var(--font-sans);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+  
+  .dark body {
+    background-color: var(--color-neo-dark);
+    color: white;
+  }
+}
+
+.brutal-border {
+  border-width: 4px;
+  border-style: solid;
+  border-color: black;
+}
+.dark .brutal-border {
+  border-color: white;
+}
+
+.brutal-shadow {
+  box-shadow: 4px 4px 0 0 #000;
+}
+.dark .brutal-shadow {
+  box-shadow: 4px 4px 0 0 #fff;
+}
+
+.brutal-shadow-sm {
+  box-shadow: 2px 2px 0 0 #000;
+}
+.dark .brutal-shadow-sm {
+  box-shadow: 2px 2px 0 0 #fff;
+}
+
+.brutal-hover {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.brutal-hover:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #000;
+}
+.dark .brutal-hover:hover {
+  box-shadow: 2px 2px 0 0 #fff;
+}
+
+.brutal-active:active {
+  transform: translate(4px, 4px);
+  box-shadow: none !important;
+}
+
+.brutal-card {
+  border-width: 4px;
+  border-style: solid;
+  border-color: black;
+  box-shadow: 4px 4px 0 0 #000;
+  background-color: var(--color-neo-yellow);
+}
+.dark .brutal-card {
+  border-color: white;
+  box-shadow: 4px 4px 0 0 #fff;
+}
+
+.brutal-btn {
+  border-width: 4px;
+  border-style: solid;
+  border-color: black;
+  box-shadow: 4px 4px 0 0 #000;
+  font-weight: 700;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.dark .brutal-btn {
+  border-color: white;
+  box-shadow: 4px 4px 0 0 #fff;
+}
+.brutal-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #000;
+}
+.dark .brutal-btn:hover {
+  box-shadow: 2px 2px 0 0 #fff;
+}
+.brutal-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none !important;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-left: 4px solid black;
+}
+.dark ::-webkit-scrollbar-track {
+  border-left: 4px solid white;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-neo-pink);
+  border: 4px solid black;
+}
+.dark ::-webkit-scrollbar-thumb {
+  border: 4px solid white;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

@@ -1,0 +1,71 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Primitives
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    
+    // Validators
+    function isValidUser(data) {
+       return data.keys().hasAll(['email', 'name', 'createdAt']) && 
+              data.size() == 3 &&
+              data.email is string && data.email.size() <= 200 &&
+              data.name is string && data.name.size() <= 100 &&
+              data.createdAt == request.time;
+    }
+
+    function isValidTrack(data) {
+       return data.keys().hasAll(['id', 'title', 'ownerId', 'createdAt']) &&
+              data.id is string && data.id.size() <= 128 &&
+              data.title is string && data.title.size() <= 200 &&
+              data.ownerId == request.auth.uid &&
+              data.createdAt == request.time;
+    }
+
+    function isValidPlaylist(data) {
+       return data.keys().hasAll(['name', 'ownerId', 'createdAt', 'updatedAt']) &&
+              data.name is string && data.name.size() <= 100 &&
+              data.ownerId == request.auth.uid &&
+              data.createdAt is timestamp &&
+              data.updatedAt == request.time;
+    }
+
+    // Rules for Users
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidUser(incoming());
+      allow update: if isSignedIn() && request.auth.uid == userId && 
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name']) &&
+                       incoming().name is string && incoming().name.size() <= 100;
+    }
+
+    // Rules for Tracks
+    match /tracks/{trackId} {
+      allow read: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidTrack(incoming());
+      allow update: if isSignedIn() && resource.data.ownerId == request.auth.uid &&
+                       isValidTrack(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['title', 'artist', 'album', 'coverUrl']);
+      allow delete: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+    }
+
+    // Rules for Playlists
+    match /playlists/{playlistId} {
+      allow read: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidPlaylist(incoming());
+      allow update: if isSignedIn() && resource.data.ownerId == request.auth.uid &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'trackIds', 'updatedAt']) &&
+                       incoming().name is string && incoming().name.size() <= 100 &&
+                       incoming().trackIds is list &&
+                       incoming().updatedAt == request.time;
+      allow delete: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+    }
+  }
+}
